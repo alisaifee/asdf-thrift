@@ -16,9 +16,12 @@ jobs:
       matrix:
         os:
           - macos-latest
+          - macos-11
           - ubuntu-latest
+          - ubuntu-18.04
         version:
           - 0.12.0
+          - 0.13.0
           - 0.14.0
           - 0.14.1
           - 0.14.2
