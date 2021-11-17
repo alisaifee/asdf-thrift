@@ -17,7 +17,13 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
-
+        version:
+          - 0.12.0
+          - 0.14.0
+          - 0.14.1
+          - 0.14.2
+          - 0.15.0
+          - latest
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -32,6 +38,7 @@ jobs:
         uses: asdf-vm/actions/plugin-test@v1
         with:
           command: thrift --version
+          version: ${{ matrix.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   lint:
