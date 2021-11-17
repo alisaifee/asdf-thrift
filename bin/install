@@ -1,60 +1,11 @@
 #!/usr/bin/env bash
 
-set -e
-set -o pipefail
+set -euo pipefail
 
-ASDF_INSTALL_TYPE=${ASDF_INSTALL_TYPE:-version  }
-TMPDIR=${TMPDIR:-/tmp}
-[ -n "$ASDF_INSTALL_VERSION" ] || (echo >&2 'Missing ASDF_INSTALL_VERSION' && exit 1)
-[ -n "$ASDF_INSTALL_PATH" ] || (echo >&2 'Missing ASDF_INSTALL_PATH' && exit 1)
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "$current_script_path")")
 
-install_thrift() {
-	local version=$2
-	local install_path=$3
-	local bin_install_path="$install_path/bin"
-	local download_url
-	download_url="$(get_download_url "$version")"
-	mkdir -p "${bin_install_path}"
+# shellcheck source=../lib/utils.bash
+source "${plugin_dir}/lib/utils.bash"
 
-	if [ "$(uname)" == "Darwin" ]; then
-		local bison_brew_path
-		bison_brew_path="$(brew --prefix bison)/bin"
-		export PATH="$bison_brew_path:$PATH"
-		local bison_version
-		if ! type "automake" >/dev/null 2>&1; then
-			echo "Failed to install, thrift requires automake"
-			exit 1
-		fi
-		if type "bison" >/dev/null 2>&1; then
-			bison_version=$(bison --version | head -n 1 | awk '{print $NF}')
-		fi
-		if [[ -z "${bison_version}" || ("${bison_version}" < "2.5.0") ]]; then
-			echo "Thrift requires bison >= 2.5 to compile"
-			exit 1
-		fi
-	fi
-
-	echo "Downloading thrift from ${download_url}"
-	curl -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
-	mkdir -p "${install_path}/src"
-	tar xzf "${install_path}/thrift.tar.gz" -C "${install_path}/src" --strip-components=1
-	cd "${install_path}/src"
-	./bootstrap.sh
-	echo "Configuring thrift ${version}"
-	./configure \
-		--bindir="${install_path}/bin" \
-		--disable-option-checking \
-		--disable-dependency-tracking \
-		--disable-{tests,debug,libs,shared,static} \
-		--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift}
-	echo "Compiling thrift ${version}"
-	make
-	make install
-	rm -rf "${install_path}/src ""${install_path}"/thrift.tar.gz
-}
-
-get_download_url() {
-	local version="$1"
-	echo "https://github.com/apache/thrift/archive/refs/tags/v${version}.tar.gz"
-}
-install_thrift "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+install_version "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
