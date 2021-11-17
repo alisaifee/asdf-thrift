@@ -3,19 +3,30 @@
 # asdf-thrift [![Build](https://github.com/alisaifee/asdf-thrift/actions/workflows/main.yml/badge.svg)]
 
 
-[thrift](https://github.com/alisaifee/thrift) plugin for the [asdf version manager](https://asdf-vm.com).
+[thrift](https://github.com/apache/thrift) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
 # Contents
 
 - [Dependencies](#dependencies)
+- [Supported environments](#supported-versions)
 - [Install](#install)
 - [License](#license)
 
 # Dependencies
 
 - `automake`, `bison` (>=2.5)
+
+## macOS
+The default version of `bison` on macOS is too low to compile thrift against.
+Please install using [homebrew](): `brew install bison`
+
+# Supported versions
+The plugin is tested against recent version of macOS & Ubuntu
+(refer to [CI Matrix](https://github.com/alisaifee/asdf-thrift/actions/workflows/main.yml))
+and builds a few known version + the latest release tag.
+
 
 # Install
 
