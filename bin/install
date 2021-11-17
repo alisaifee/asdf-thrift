@@ -14,8 +14,25 @@ install_thrift() {
 	local bin_install_path="$install_path/bin"
 	local download_url
 	download_url="$(get_download_url "$version")"
-
 	mkdir -p "${bin_install_path}"
+
+	if [ "$(uname)" == "Darwin" ]; then
+		local bison_brew_path
+		bison_brew_path="$(brew --prefix bison)/bin"
+		export PATH="$bison_brew_path:$PATH"
+		local bison_version
+		if ! type "automake" >/dev/null 2>&1; then
+			echo "Failed to install, thrift requires automake"
+			exit 1
+		fi
+		if type "bison" >/dev/null 2>&1; then
+			bison_version=$(bison --version | head -n 1 | awk '{print $NF}')
+		fi
+		if [[ -z "${bison_version}" || ("${bison_version}" < "2.5.0") ]]; then
+			echo "Thrift requires bison >= 2.5 to compile"
+			exit 1
+		fi
+	fi
 
 	echo "Downloading thrift from ${download_url}"
 	curl -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
@@ -26,12 +43,11 @@ install_thrift() {
 	echo "Configuring thrift ${version}"
 	./configure \
 		--bindir="${install_path}/bin" \
-		--disable-{tests,debug} \
-		--without-{erlang,go,haskell,java,perl,php,pho_extension,nodejs,python,py3,ruby,rust,swift} \
-		>/dev/null 2>&1
+		--disable-{tests,debug,libs,shared,static} \
+		--without-{erlang,go,haskell,java,perl,php,pho_extension,nodejs,python,py3,ruby,rs,swift}
 	echo "Compiling thrift ${version}"
-	make >/dev/null 2>&1
-	make install >/dev/null 2>&1
+	make
+	make install
 	rm -rf "${install_path}/src ""${install_path}"/thrift.tar.gz
 }
 

@@ -21,11 +21,19 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name:  Install
+        run:   |
+              if [ "$RUNNER_OS" == "macOS" ]; then
+                    brew install automake bison
+              fi
+        shell: bash
+      - uses: actions/checkout@v2
       - name: Test plugin
         uses: asdf-vm/actions/plugin-test@v1
         with:
           command: thrift --version
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   lint:
     runs-on: ubuntu-latest
 

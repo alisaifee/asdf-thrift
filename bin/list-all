@@ -2,8 +2,8 @@
 
 releases_path=https://api.github.com/repos/apache/thrift/releases
 cmd="curl -s"
-if [ -n "$OAUTH_TOKEN" ]; then
-	cmd="$cmd -H 'Authorization: token $OAUTH_TOKEN'"
+if [ -n "$GITHUB_TOKEN" ]; then
+	cmd="$cmd -H 'Authorization: token $GITHUB_TOKEN'"
 fi
 cmd="$cmd $releases_path"
 
@@ -14,5 +14,5 @@ function sort_versions() {
 }
 
 # Fetch all tag names, and get only second column. Then remove all unnecesary characters.
-versions=$(eval "$cmd" | grep -oP "(?<=tag_name\":\ \")\s*(?<=\")(v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)" | sed -E 's/v(.*)/\1/' | sort_versions)
+versions=$(eval "$cmd" | grep -oE "tag_name\": *\"v.{1,7}\"," | sed 's/tag_name\": *\"v//;s/\",//' | sort_versions)
 echo "$versions"
