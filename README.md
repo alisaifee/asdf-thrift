@@ -1,6 +1,6 @@
 <div align="center">
 
-# asdf-thrift [![Build](https://github.com/alisaifee/asdf-thrift/actions/workflows/build.yml/badge.svg)](https://github.com/alisaifee/asdf-thrift/actions/workflows/build.yml) [![Lint](https://github.com/alisaifee/asdf-thrift/actions/workflows/lint.yml/badge.svg)](https://github.com/alisaifee/asdf-thrift/actions/workflows/lint.yml)
+# asdf-thrift [![Build](https://github.com/alisaifee/asdf-thrift/actions/workflows/main.yml/badge.svg)]
 
 
 [thrift](https://github.com/alisaifee/thrift) plugin for the [asdf version manager](https://asdf-vm.com).
