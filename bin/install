@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+ASDF_INSTALL_TYPE=${ASDF_INSTALL_TYPE:-version  }
+TMPDIR=${TMPDIR:-/tmp}
+[ -n "$ASDF_INSTALL_VERSION" ] || (>&2 echo 'Missing ASDF_INSTALL_VERSION' && exit 1)
+[ -n "$ASDF_INSTALL_PATH" ] || (>&2 echo 'Missing ASDF_INSTALL_PATH' && exit 1)
+
+install_thrift() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+  local bin_install_path="$install_path/bin"
+  local download_url="$(get_download_url $version)"
+
+  mkdir -p "${bin_install_path}"
+
+  local bin_path="${bin_install_path}/thrift"
+  echo "Downloading thrift from ${download_url}"
+  curl -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
+  mkdir -p "${install_path}/src"
+  tar xzf "${install_path}/thrift.tar.gz" -C "${install_path}/src" --strip-components=1
+  cd "${install_path}/src"
+  ./bootstrap.sh
+  echo "Configuring thrift ${version}"
+  ./configure \
+    --bindir="${install_path}/bin" \
+    --disable-{tests,debug} \
+    --without-{erlang,go,haskell,java,perl,php,pho_extension,nodejs,python,py3,ruby,rust,swift} \
+    2>&1 > /dev/null
+  echo "Compiling thrift ${version}"
+  make 2>&1 > /dev/null
+  make install 2>&1 > /dev/null
+  rm -rf "${install_path}/src "${install_path}/thrift.tar.gz
+}
+
+get_download_url() {
+  local version="$1"
+  echo "https://github.com/apache/thrift/archive/refs/tags/v${version}.tar.gz"
+}
+install_thrift $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
