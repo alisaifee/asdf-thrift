@@ -35,7 +35,7 @@ jobs:
               if [ "$RUNNER_OS" == "macOS" ]
                 then brew install automake bison boost
               elif [ "$RUNNER_OS" == "Linux" ]
-                then apt install libboost-all-dev
+                then sudo apt install libboost-all-dev
               fi
         shell: bash
       - uses: actions/checkout@v2
