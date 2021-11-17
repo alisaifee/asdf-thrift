@@ -32,11 +32,10 @@ jobs:
     steps:
       - name:  Install
         run:   |
-              if [ "$RUNNER_OS" == "macOS" ]; then
-                  brew install automake bison boost
-              fi
-              elif [ "$RUNNER_OS" == "Linux" ]; then
-                  apt install libboost-all-dev
+              if [ "$RUNNER_OS" == "macOS" ]
+                then brew install automake bison boost
+              elif [ "$RUNNER_OS" == "Linux" ]
+                then apt install libboost-all-dev
               fi
         shell: bash
       - uses: actions/checkout@v2
