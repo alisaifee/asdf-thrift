@@ -34,6 +34,7 @@ install_version() {
 	local install_type="$1"
 	local version="$2"
 	local install_path="$3"
+	local make_flags="-j$ASDF_CONCURRENCY"
 
 	if [ "$install_type" != "version" ]; then
 		fail "asdf-$TOOL_NAME supports release installs only"
@@ -61,10 +62,12 @@ install_version() {
 	(
 		local download_url
 		download_url=$(get_download_url $version)
+		echo "Downloading source....."
 		curl -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
 		mkdir -p "${install_path}/src"
 		tar xzf "${install_path}/thrift.tar.gz" -C "${install_path}/src" --strip-components=1
 		cd "${install_path}/src"
+		echo "Configuring build...."
 		./bootstrap.sh >/dev/null 2>&1
 		./configure \
 			--bindir="${install_path}/bin" \
@@ -73,7 +76,8 @@ install_version() {
 			--disable-{tests,debug,libs,shared,static} \
 			--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift} \
 			>/dev/null 2>&1
-		make install >/dev/null
+		echo "Compiling with flags ${make_flags}...."
+		make "$make_flags" install >/dev/null
 	) || (
 		rm -rf "${install_path}"
 		fail "An error ocurred while installing $TOOL_NAME $version."
