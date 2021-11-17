@@ -43,8 +43,10 @@ install_thrift() {
 	echo "Configuring thrift ${version}"
 	./configure \
 		--bindir="${install_path}/bin" \
+		--disable-option-checking \
+		--disable-dependency-tracking \
 		--disable-{tests,debug,libs,shared,static} \
-		--without-{erlang,go,haskell,java,perl,php,pho_extension,nodejs,python,py3,ruby,rs,swift}
+		--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift}
 	echo "Compiling thrift ${version}"
 	make
 	make install
