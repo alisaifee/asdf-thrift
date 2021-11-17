@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run ShellCheck
-        run: shellcheck bin/*
+        run: shellcheck -s bash -x bin/* -P lib/
 
   format:
     runs-on: macos-latest

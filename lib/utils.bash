@@ -71,7 +71,6 @@ install_version() {
 			--disable-option-checking \
 			--disable-dependency-tracking \
 			--disable-{tests,debug,libs,shared,static} \
-			--without-boost \
 			--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift} \
 			>/dev/null 2>&1
 		make install >/dev/null
