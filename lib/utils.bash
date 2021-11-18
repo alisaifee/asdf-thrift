@@ -13,8 +13,8 @@ fail() {
 
 curl_opts=(-fsSL)
 
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-	curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
+if [ -n "${GITHUB_TOKEN:-}" ]; then
+	curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_TOKEN")
 fi
 
 sort_versions() {
@@ -63,7 +63,7 @@ install_version() {
 		local download_url
 		download_url=$(get_download_url $version)
 		echo "Downloading source....."
-		curl -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
+		curl "${curl_opts[@]}" -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
 		mkdir -p "${install_path}/src"
 		tar xzf "${install_path}/thrift.tar.gz" -C "${install_path}/src" --strip-components=1
 		cd "${install_path}/src"
