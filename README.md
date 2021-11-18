@@ -18,6 +18,13 @@
 
 - `automake`, `bison` (>=2.5)
 
+## macOS
+The default version of `bison` on macOS is too low to compile thrift against.
+Please install using [homebrew](https://brew.sh/):
+```sh
+brew install bison
+```
+
 ## Version specific dependencies
 
 Thrift version `0.12.0` explicitely requires boost to build.
@@ -32,12 +39,6 @@ brew install boost
 apt install libboost-all-dev
 ```
 
-## macOS
-The default version of `bison` on macOS is too low to compile thrift against.
-Please install using [homebrew](https://brew.sh/):
-```sh
-brew install bison
-```
 
 # Supported versions
 The plugin is tested against recent version of macOS & Ubuntu
