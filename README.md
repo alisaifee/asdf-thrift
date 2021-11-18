@@ -10,7 +10,7 @@
 # Contents
 
 - [Dependencies](#dependencies)
-- [Supported environments](#supported-versions)
+- [Supported environments & versions](#supported-versions)
 - [Install](#install)
 - [License](#license)
 
