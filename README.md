@@ -43,7 +43,7 @@ apt install libboost-all-dev
 # Supported versions
 The plugin is tested against recent version of macOS & Ubuntu
 (refer to [CI Matrix](https://github.com/alisaifee/asdf-thrift/actions/workflows/main.yml))
-and builds a few known version + the latest release tag.
+and builds a few known versions + the latest release tag.
 
 
 # Install
