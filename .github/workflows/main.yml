@@ -21,10 +21,10 @@ jobs:
           - ubuntu-latest
           - ubuntu-18.04
         version:
-          - 0.12.0
           - 0.13.0
           - 0.14.2
           - 0.15.0
+          - 0.16.0
           - latest
     runs-on: ${{ matrix.os }}
 
