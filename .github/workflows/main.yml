@@ -17,6 +17,7 @@ jobs:
         os:
           - macos-latest
           - macos-11
+          - macos-12
           - ubuntu-latest
           - ubuntu-18.04
         version:
