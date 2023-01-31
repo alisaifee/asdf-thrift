@@ -71,15 +71,19 @@ install_version() {
 		cd "${install_path}/src"
 		echo "Configuring build...."
 		./bootstrap.sh >"$log_file" 2>&1
-		./configure \
-			--bindir="${install_path}/bin" \
-			--disable-option-checking \
-			--disable-dependency-tracking \
-			--disable-{tests,debug,libs,shared,static} \
-			--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift} \
-			>>"$log_file" 2>&1
-		echo "Compiling with flags ${make_flags}...."
-		make "$make_flags" install >>"$log_file"
+		if [ $? -eq 0 ]; then
+			./configure \
+				--bindir="${install_path}/bin" \
+				--disable-option-checking \
+				--disable-dependency-tracking \
+				--disable-{tests,debug,libs,shared,static} \
+				--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift} \
+				>>"$log_file" 2>&1
+			echo "Compiling with flags ${make_flags}...."
+			make "$make_flags" install >>"$log_file"
+		else
+			exit $?
+		fi
 	) || (
 		mv "$log_file" "$TMPDIR"
 		rm -rf "${install_path}"
