@@ -18,6 +18,8 @@
 
 - `automake`, `bison` (>=2.5), `libtool` (>=1.5.24)
 
+Please refer to [the official installation documentation](https://thrift.apache.org/docs/install/#requirements-for-building-from-source) for details.
+
 ## macOS
 The default versions of `bison` and `libtool` on macOS are not sufficient compile thrift against.
 Please install using [homebrew](https://brew.sh/):
