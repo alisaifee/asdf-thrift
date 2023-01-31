@@ -16,14 +16,16 @@
 
 # Dependencies
 
-- `automake`, `bison` (>=2.5)
+- `automake`, `bison` (>=2.5), `libtool` (>=1.5.24)
 
 ## macOS
-The default version of `bison` on macOS is too low to compile thrift against.
+The default versions of `bison` and `libtool` on macOS are not sufficient compile thrift against.
 Please install using [homebrew](https://brew.sh/):
 ```sh
 brew install bison
+brew install libtool
 ```
+
 
 ## Version specific dependencies
 
