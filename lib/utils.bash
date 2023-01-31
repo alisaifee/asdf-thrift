@@ -60,28 +60,30 @@ install_version() {
 		fi
 	fi
 
+	local log_file="${install_path}/thrift-install-${version}.txt"
 	(
 		local download_url
-		download_url=$(get_download_url $version)
+		download_url=$(get_download_url "$version")
 		echo "Downloading source....."
 		curl "${curl_opts[@]}" -sSL "$download_url" -o "${install_path}/thrift.tar.gz"
 		mkdir -p "${install_path}/src"
 		tar xzf "${install_path}/thrift.tar.gz" -C "${install_path}/src" --strip-components=1
 		cd "${install_path}/src"
 		echo "Configuring build...."
-		./bootstrap.sh >/dev/null 2>&1
+		./bootstrap.sh >"$log_file" 2>&1
 		./configure \
 			--bindir="${install_path}/bin" \
 			--disable-option-checking \
 			--disable-dependency-tracking \
 			--disable-{tests,debug,libs,shared,static} \
 			--without-{cpp,cl,d,dart,erlang,go,haskell,haxe,java,perl,php,php_extension,netstd,nodejs,nodets,python,py3,ruby,rs,swift} \
-			>/dev/null 2>&1
+			>>"$log_file" 2>&1
 		echo "Compiling with flags ${make_flags}...."
-		make "$make_flags" install >/dev/null
+		make "$make_flags" install >>"$log_file"
 	) || (
+		mv "$log_file" "$TMPDIR"
 		rm -rf "${install_path}"
-		fail "An error ocurred while installing $TOOL_NAME $version."
+		fail "An error ocurred while installing $TOOL_NAME $version. See $TMPDIR/thrift-install-$version.txt"
 	)
 }
 
