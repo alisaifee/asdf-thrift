@@ -24,8 +24,7 @@ sort_versions() {
 
 list_all_versions() {
 	releases_path=https://api.github.com/repos/apache/thrift/releases
-	cmd="curl -s"
-	cmd="$cmd $releases_path"
+	cmd="curl ${curl_opts[@]} $releases_path"
 	versions=$(eval "$cmd" | grep -oE "tag_name\": *\"v.{1,7}\"," | sed 's/tag_name\": *\"v//;s/\",//')
 	echo "$versions"
 }
