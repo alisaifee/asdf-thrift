@@ -46,7 +46,7 @@ install_version() {
 		local bison_brew_path
 		bison_brew_path="$(brew --prefix bison)/bin"
 		export PATH="$bison_brew_path:$PATH"
-		export CXXFLAGS="-Wno-inconsistent-missing-override"
+		export CXXFLAGS="${CXXFLAGS:--Wno-inconsistent-missing-override}"
 		local bison_version
 		if ! type "automake" >/dev/null 2>&1; then
 			fail "Thrift requires automake"
