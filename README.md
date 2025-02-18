@@ -36,6 +36,7 @@ Thrift version `0.12.0` explicitely requires boost to build.
 ### macOS
 ```
 brew install boost
+export CXXFLAGS="-Wno-inconsistent-missing-override -Wno-unused-but-set-variable -I/opt/homebrew/include"
 ```
 
 ### Debian
